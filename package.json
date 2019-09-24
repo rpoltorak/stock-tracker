@@ -1,0 +1,19 @@
+{
+  "name": "stock-app",
+  "version": "1.0.0",
+  "description": "Stock Market Data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rpoltorak/stock-app.git"
+  },
+  "author": "Remek Poltorak <rpoltorak@entitive.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rpoltorak/stock-app/issues"
+  },
+  "homepage": "https://github.com/rpoltorak/stock-app#readme"
+}
