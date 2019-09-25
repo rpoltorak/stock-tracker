@@ -6,9 +6,7 @@ export function App() {
   return (
     <div>
       <h1>{counter}</h1>
-      <button onClick={() => updateCounter(counter + 1)}>
-        increment
-      </button>
+      <button onClick={() => updateCounter(counter + 1)}>increment</button>
     </div>
   );
 }
