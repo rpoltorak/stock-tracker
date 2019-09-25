@@ -1,5 +1,5 @@
-var HTMLWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+var HTMLWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
 
 module.exports = {
   mode: "development",
@@ -7,32 +7,49 @@ module.exports = {
   devtool: "source-map",
 
   entry: {
-    app: [path.resolve("src/index.jsx")]
+    app: [path.resolve("src/index.jsx")],
   },
 
   output: {
     path: path.resolve("build"),
     filename: "[name].[hash].js",
-    chunkFilename: "[name].[chunkhash].js"
+    chunkFilename: "[name].[chunkhash].js",
   },
 
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: [".js", ".jsx"],
   },
 
   plugins: [
     new HTMLWebpackPlugin({
-      template: path.resolve("src/index.html")
-    })
+      template: path.resolve("src/index.html"),
+    }),
   ],
 
   module: {
     rules: [
       {
-        test: /\.(js|jsx)?$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: "babel-loader"
-      }
-    ]
-  }
+        loader: "babel-loader",
+      },
+      {
+        test: /\.(css|scss)$/,
+        use: [
+          {
+            loader: "style-loader",
+          },
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+            },
+          },
+          {
+            loader: "sass-loader",
+          },
+        ],
+      },
+    ],
+  },
 };
