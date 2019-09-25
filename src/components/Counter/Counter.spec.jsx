@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
-import { App } from "./App";
+import { Counter } from "../Counter/Counter";
 
-describe("App", () => {
+describe("Counter", () => {
   it("Increments counter after clicking a button", () => {
-    const { getByTestId } = render(<App />);
+    const { getByTestId } = render(<Counter />);
 
     const $title = getByTestId("title");
     const $button = getByTestId("button");

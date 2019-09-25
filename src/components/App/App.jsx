@@ -1,21 +1,15 @@
-import React, { useState } from "react";
-import styles from "./App.scss";
+import React from "react";
+import { Router } from "@reach/router";
+import Counter from "../Counter/Counter";
+
+const Home = () => <h1>Home</h1>;
 
 export function App() {
-  const [counter, updateCounter] = useState(0);
-
   return (
-    <div>
-      <h1 data-testid="title" className={styles.title}>
-        {counter}
-      </h1>
-      <button
-        data-testid="button"
-        onClick={() => updateCounter(counter + 1)}
-      >
-        increment
-      </button>
-    </div>
+    <Router>
+      <Home path="/" />
+      <Counter path="/counter" />
+    </Router>
   );
 }
 
