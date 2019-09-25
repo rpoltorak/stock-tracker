@@ -7,18 +7,32 @@ module.exports = {
   devtool: "source-map",
 
   entry: {
-    app: [path.resolve("src/index.js")],
+    app: [path.resolve("src/index.jsx")]
   },
 
   output: {
     path: path.resolve("build"),
     filename: "[name].[hash].js",
-    chunkFilename: "[name].[chunkhash].js",
+    chunkFilename: "[name].[chunkhash].js"
   },
 
   resolve: {
-    extensions: [".js"],
+    extensions: [".js", ".jsx"]
   },
 
-  plugins: [new HtmlWebpackPlugin()]
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve("src/index.html")
+    })
+  ],
+
+  module: {
+    rules: [
+      {
+        test: /\.js(x)?$/,
+        exclude: /node_modules/,
+        loader: "babel-loader"
+      }
+    ]
+  }
 };
