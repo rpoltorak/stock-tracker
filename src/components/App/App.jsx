@@ -5,8 +5,13 @@ export function App() {
 
   return (
     <div>
-      <h1>{counter}</h1>
-      <button onClick={() => updateCounter(counter + 1)}>increment</button>
+      <h1 data-testid="title">{counter}</h1>
+      <button
+        data-testid="button"
+        onClick={() => updateCounter(counter + 1)}
+      >
+        increment
+      </button>
     </div>
   );
 }
