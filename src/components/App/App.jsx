@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useContext, useReducer } from "react";
 import { Router } from "@reach/router";
-import Counter from "../Counter/Counter";
 
-const Home = () => <h1>Home</h1>;
+import { Store, reducer } from "../../store";
+import { usePersistedContext, usePersistedReducer } from "../../hooks";
+
+import { Navigation } from "../Navigation";
+import { TrackPage } from "../../pages";
 
 export function App() {
+  const globalStore = usePersistedContext(useContext(Store), "state");
+
+  const [state, dispatch] = usePersistedReducer(useReducer(reducer, globalStore), "state");
+
   return (
-    <Router>
-      <Home path="/" />
-      <Counter path="/counter" />
-    </Router>
+    <Store.Provider value={{ state, dispatch }}>
+      <Navigation />
+      <Router>
+        <TrackPage path="/" />
+      </Router>
+    </Store.Provider>
   );
 }
 
