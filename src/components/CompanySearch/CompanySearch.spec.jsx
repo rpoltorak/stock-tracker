@@ -1,11 +1,11 @@
 import React from "react";
 import axios from "axios";
 import { render, fireEvent, wait } from "@testing-library/react";
-import { Store } from "../../store";
-import { SymbolSearch } from "./SymbolSearch";
+// import { Store } from "../../store";
+import { CompanySearch } from "./CompanySearch";
 
 const setup = () => {
-  const utils = render(<SymbolSearch />);
+  const utils = render(<CompanySearch />);
   const input = utils.getByTestId("search");
   return {
     input,
@@ -38,16 +38,16 @@ const exampleData = [
   },
 ];
 
-const renderWithStore = (state, dispatch) =>
-  render(
-    <Store.Provider value={{ state, dispatch }}>
-      <SymbolSearch />
-    </Store.Provider>,
-  );
+// const renderWithStore = (state, dispatch) =>
+//   render(
+//     <Store.Provider value={{ state, dispatch }}>
+//       <CompanySearch />
+//     </Store.Provider>,
+//   );
 
 jest.mock("axios");
 
-describe("SymbolSearch", () => {
+describe("CompanySearch", () => {
   test("renders properly on idle state", () => {
     const { getByText, input } = setup();
 

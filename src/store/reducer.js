@@ -1,38 +1,48 @@
+import omitBy from "lodash.omitby";
 import { ActionTypes } from "./actions";
 
 const initialState = {
-  symbols: [],
+  companies: {
+    byId: {},
+    ids: [],
+  },
 };
 
 export function reducer(state = initialState, action) {
   switch (action.type) {
-    case ActionTypes.ADD_SYMBOL:
-      return addSymbol(state, action.payload);
-    case ActionTypes.REMOVE_SYMBOL:
-      return removeSymbol(state, action.payload);
+    case ActionTypes.ADD_COMPANY:
+      return addCompany(state, action.payload);
+    case ActionTypes.REMOVE_COMPANY:
+      return removeCompany(state, action.payload);
     default:
       return state;
   }
 }
 
-function addSymbol(state, symbol) {
-  if (!symbol) {
-    return state;
-  }
+function addCompany(state, company) {
+  const { symbol } = company;
 
-  if (state.symbols.includes(symbol)) {
+  if (!symbol || state.companies.ids.includes(symbol)) {
     return state;
   }
 
   return {
     ...state,
-    symbols: [...state.symbols, symbol],
+    companies: {
+      byId: {
+        ...state.companies.byId,
+        [symbol]: company,
+      },
+      ids: [...state.companies.ids, symbol],
+    },
   };
 }
 
-function removeSymbol(state, symbol) {
+function removeCompany(state, symbol) {
   return {
-    ...state,
-    symbols: state.symbols.filter(item => item !== symbol),
+    companies: {
+      byId: omitBy(state.companies.byId, item => item.symbol === symbol),
+      ids: state.companies.ids.filter(item => item !== symbol),
+    },
   };
 }

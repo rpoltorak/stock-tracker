@@ -3,11 +3,13 @@ import { Store } from "../../store";
 import { CompanyItem } from "./CompanyItem";
 
 export function CompanyList() {
-  const { state } = useContext(Store);
+  const {
+    state: { companies },
+  } = useContext(Store);
 
   return (
     <ul>
-      {state.symbols.map(symbol => (
+      {companies.ids.map(symbol => (
         <CompanyItem key={symbol} symbol={symbol}></CompanyItem>
       ))}
     </ul>

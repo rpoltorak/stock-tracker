@@ -1,3 +1,3 @@
 export * from "./Navigation";
-export * from "./SymbolSearch";
+export * from "./CompanySearch";
 export * from "./CompanyList";

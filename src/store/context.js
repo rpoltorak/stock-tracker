@@ -1,5 +1,8 @@
 import React from "react";
 
 export const Store = React.createContext({
-  symbols: [],
+  companies: {
+    byId: {},
+    ids: [],
+  },
 });

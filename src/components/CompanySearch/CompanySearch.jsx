@@ -4,9 +4,10 @@ import { useRequest } from "../../hooks";
 import { search as searchCompany } from "../../services";
 import { useDebounce } from "../../hooks";
 
-export function SymbolSearch() {
+export function CompanySearch() {
   const { dispatch } = useContext(Store);
   const [query, setQuery] = useState("");
+  const [selectedItem, setSelectedItem] = useState(null);
   const [{ data, isLoading, isError }, setParams, setData] = useRequest(
     searchCompany(query),
     {
@@ -26,7 +27,7 @@ export function SymbolSearch() {
       <div>Company symbol</div>
       <form
         onSubmit={event => {
-          dispatch({ type: ActionTypes.ADD_SYMBOL, payload: query });
+          dispatch({ type: ActionTypes.ADD_COMPANY, payload: selectedItem });
           setQuery("");
           setData({
             bestMatches: [],
@@ -48,10 +49,16 @@ export function SymbolSearch() {
       ) : (
         <ul>
           {data.bestMatches &&
-            data.bestMatches.map(item => (
-              <li key={item.symbol}>
-                <a href="#" onClick={() => setQuery(item.symbol)}>
-                  {item.symbol}: {item.name}
+            data.bestMatches.map(({ name, symbol }) => (
+              <li key={symbol}>
+                <a
+                  href="#"
+                  onClick={() => {
+                    setQuery(symbol);
+                    setSelectedItem({ name, symbol });
+                  }}
+                >
+                  {symbol}: {name}
                 </a>
               </li>
             ))}

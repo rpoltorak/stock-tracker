@@ -9,10 +9,15 @@ CompanyItem.propTypes = {
 };
 
 export function CompanyItem({ symbol }) {
+  const {
+    state: { companies },
+  } = useContext(Store);
   const { dispatch } = useContext(Store);
   const [{ data, isLoading, isError }] = useRequest(getQuote(symbol), {
     globalQuote: {},
   });
+
+  const { name } = companies.byId[symbol];
 
   return (
     <Fragment>
@@ -21,6 +26,9 @@ export function CompanyItem({ symbol }) {
         <li>Loading ...</li>
       ) : (
         <li>
+          <span>
+            {symbol}: {name}
+          </span>
           <span>{JSON.stringify(data)}</span>
           <a
             href="#"
