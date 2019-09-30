@@ -4,10 +4,10 @@ import { useRequest } from "../../hooks";
 import { search as searchCompany, normalizeData } from "../../services";
 import { useDebounce } from "../../hooks";
 
-function SymbolSearch() {
+export function SymbolSearch() {
   const { dispatch } = useContext(Store);
   const [query, setQuery] = useState("");
-  const [{ data, isLoading, isError }, setParams] = useRequest(
+  const [{ data, isLoading, isError }, setParams, setData] = useRequest(
     searchCompany(query),
     {
       bestMatches: [],
@@ -28,6 +28,9 @@ function SymbolSearch() {
         onSubmit={event => {
           dispatch({ type: ActionTypes.ADD_SYMBOL, payload: query });
           setQuery("");
+          setData({
+            bestMatches: [],
+          });
           event.preventDefault();
         }}
       >
@@ -60,5 +63,3 @@ function SymbolSearch() {
     </Fragment>
   );
 }
-
-export { SymbolSearch };

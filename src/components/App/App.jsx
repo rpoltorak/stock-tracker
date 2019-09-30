@@ -5,18 +5,22 @@ import { Store, reducer } from "../../store";
 import { usePersistedContext, usePersistedReducer } from "../../hooks";
 
 import { Navigation } from "../Navigation";
-import { TrackPage } from "../../pages";
+import { TrackPage, CompaniesPage } from "../../pages";
 
 export function App() {
   const globalStore = usePersistedContext(useContext(Store), "state");
 
-  const [state, dispatch] = usePersistedReducer(useReducer(reducer, globalStore), "state");
+  const [state, dispatch] = usePersistedReducer(
+    useReducer(reducer, globalStore),
+    "state",
+  );
 
   return (
     <Store.Provider value={{ state, dispatch }}>
       <Navigation />
       <Router>
-        <TrackPage path="/" />
+        <CompaniesPage path="/" />
+        <TrackPage path="/new" />
       </Router>
     </Store.Provider>
   );

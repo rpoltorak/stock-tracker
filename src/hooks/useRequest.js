@@ -32,7 +32,7 @@ function useRequest(initialParams, initialData) {
     }
   }, [params]);
 
-  return [{ data, isLoading, isError }, setParams];
+  return [{ data, isLoading, isError }, setParams, setData];
 }
 
 export { useRequest };
