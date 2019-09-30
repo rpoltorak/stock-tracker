@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { normalizeData } from "../services";
 
 function useRequest(initialParams, initialData) {
   const [data, setData] = useState(initialData);
@@ -14,11 +15,12 @@ function useRequest(initialParams, initialData) {
 
       try {
         const { data } = await axios(params);
+        const normalizedData = normalizeData(data);
 
-        if (data["Error Message"]) {
+        if (normalizedData.errorMessage) {
           setIsError(true);
         } else {
-          setData(data);
+          setData(normalizedData);
         }
       } catch (error) {
         setIsError(true);

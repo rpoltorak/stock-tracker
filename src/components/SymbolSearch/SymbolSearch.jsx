@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useContext, useEffect } from "react";
 import { ActionTypes, Store } from "../../store";
 import { useRequest } from "../../hooks";
-import { search as searchCompany, normalizeData } from "../../services";
+import { search as searchCompany } from "../../services";
 import { useDebounce } from "../../hooks";
 
 export function SymbolSearch() {
@@ -48,7 +48,7 @@ export function SymbolSearch() {
       ) : (
         <ul>
           {data.bestMatches &&
-            normalizeData(data.bestMatches).map(item => (
+            data.bestMatches.map(item => (
               <li key={item.symbol}>
                 <a href="#" onClick={() => setQuery(item.symbol)}>
                   {item.symbol}: {item.name}

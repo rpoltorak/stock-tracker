@@ -1,4 +1,3 @@
-import isEmpty from "lodash.isEmpty";
 import mapKeys from "lodash.mapkeys";
 import mapValues from "lodash.mapvalues";
 import camelCase from "lodash.camelcase";
@@ -41,8 +40,15 @@ export function getQuote(symbol) {
   };
 }
 
-export function normalizeData(collection) {
-  return collection.map(item =>
-    mapKeys(item, (value, key) => key.replace(/[0-9]. /, "")),
+// formats keys of api response to more human readable objects
+export function normalizeData(data) {
+  return mapValues(mapKeys(data, normalizeKey), value =>
+    Array.isArray(value)
+      ? value.map(item => mapKeys(item, normalizeKey))
+      : mapKeys(value, normalizeKey),
   );
+}
+
+function normalizeKey(value, key) {
+  return camelCase(key.replace(/[0-9]+. /, ""));
 }
