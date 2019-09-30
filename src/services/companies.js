@@ -1,43 +1,32 @@
 import mapKeys from "lodash.mapkeys";
 import mapValues from "lodash.mapvalues";
 import camelCase from "lodash.camelcase";
-import { createQuery } from "./request";
+import { get } from "./request";
 
-const url = "https://www.alphavantage.co/query";
+const quoteUrl = "https://www.alphavantage.co/query";
 const key = "4I99RWN85Z9G0022";
+const detailsUrl = "https://autocomplete.clearbit.com/v1/companies/suggest";
 
 export function search(query) {
-  if (!query) {
-    return null;
-  }
-
-  return {
-    method: "GET",
-    url:
-      url +
-      createQuery({
-        keywords: query,
-        function: "SYMBOL_SEARCH",
-        apikey: key,
-      }),
-  };
+  return get(quoteUrl, {
+    keywords: query,
+    function: "SYMBOL_SEARCH",
+    apikey: key,
+  });
 }
 
 export function getQuote(symbol) {
-  if (!symbol) {
-    return null;
-  }
+  return get(quoteUrl, {
+    symbol,
+    function: "GLOBAL_QUOTE",
+    apikey: key,
+  });
+}
 
-  return {
-    method: "GET",
-    url:
-      url +
-      createQuery({
-        symbol,
-        function: "GLOBAL_QUOTE",
-        apikey: key,
-      }),
-  };
+export function getDetails(name) {
+  return get(detailsUrl, {
+    query: name,
+  });
 }
 
 // formats keys of api response to more human readable objects
@@ -49,6 +38,10 @@ export function normalizeData(data) {
   );
 }
 
-function normalizeKey(value, key) {
+export function normalizeKey(value, key) {
   return camelCase(key.replace(/[0-9]+. /, ""));
+}
+
+export function removeSuffix(name) {
+  return name.replace(/ (Inc|Ltd|Co|L.P|LLC).+/, "");
 }

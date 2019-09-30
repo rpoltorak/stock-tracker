@@ -8,8 +8,8 @@ export function CompanySearch() {
   const { dispatch } = useContext(Store);
   const [query, setQuery] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
-  const [{ data, isLoading, isError }, setParams, setData] = useRequest(
-    searchCompany(query),
+  const [{ data, isLoading, isError }, setRequestParams, setData] = useRequest(
+    null,
     {
       bestMatches: [],
     },
@@ -18,7 +18,7 @@ export function CompanySearch() {
 
   useEffect(() => {
     if (debouncedQuery) {
-      setParams(searchCompany(debouncedQuery));
+      setRequestParams(searchCompany(debouncedQuery));
     }
   }, [debouncedQuery]);
 

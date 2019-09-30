@@ -17,7 +17,7 @@ function useRequest(initialParams, initialData) {
         const { data } = await axios(params);
         const normalizedData = normalizeData(data);
 
-        if (normalizedData.errorMessage) {
+        if (normalizedData.errorMessage || normalizedData.note) {
           setIsError(true);
         } else {
           setData(normalizedData);
