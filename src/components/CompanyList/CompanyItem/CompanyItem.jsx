@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import { ActionTypes, Store } from "../../../store";
 import { useRequest } from "../../../hooks";
 import { getQuote, getDetails, removeSuffix } from "../../../services";
+import { CompanyLogo } from "./CompanyLogo";
+import { CompanyInfo } from "./CompanyInfo";
+import { CompanyQuote } from "./CompanyQuote";
 
 CompanyItem.propTypes = {
   symbol: PropTypes.string.isRequired,
@@ -13,19 +16,21 @@ export function CompanyItem({ symbol }) {
     state: { companies },
   } = useContext(Store);
   const { dispatch } = useContext(Store);
-  const { name } = companies.byId[symbol];
+  const company = companies.byId[symbol];
   const [{ data: quote }] = useRequest(getQuote(symbol));
-  const [{ data: details }] = useRequest(getDetails(removeSuffix(name)));
+  const [{ data: detailsList }] = useRequest(
+    getDetails(removeSuffix(company.name)),
+  );
+  const details = detailsList ? detailsList[0] : null;
 
-  return (
-    <li>
-      <span>
-        {symbol}: {name}
-      </span>
-      <span>{JSON.stringify(quote)}</span>
-      <span>
-        {JSON.stringify(details && details.length ? details[0] : null)}
-      </span>
+  return quote && details ? (
+    <div>
+      <CompanyLogo url={details.logo} />
+      <CompanyInfo company={company} domain={details.domain} />
+      <CompanyQuote
+        currency={company.currency}
+        quote={quote.globalQuote}
+      ></CompanyQuote>
       <a
         href="#"
         onClick={() =>
@@ -34,6 +39,8 @@ export function CompanyItem({ symbol }) {
       >
         remove
       </a>
-    </li>
+    </div>
+  ) : (
+    <div>loading...</div>
   );
 }

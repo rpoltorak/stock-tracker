@@ -49,16 +49,16 @@ export function CompanySearch() {
       ) : (
         <ul>
           {data.bestMatches &&
-            data.bestMatches.map(({ name, symbol }) => (
-              <li key={symbol}>
+            data.bestMatches.map(company => (
+              <li key={company.symbol}>
                 <a
                   href="#"
                   onClick={() => {
-                    setQuery(symbol);
-                    setSelectedItem({ name, symbol });
+                    setQuery(company.symbol);
+                    setSelectedItem(company);
                   }}
                 >
-                  {symbol}: {name}
+                  {company.symbol}: {company.name}
                 </a>
               </li>
             ))}
