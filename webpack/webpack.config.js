@@ -1,5 +1,8 @@
-var HTMLWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
+const HTMLWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
+
+require("dotenv").config();
 
 module.exports = {
   mode: "development",
@@ -23,6 +26,9 @@ module.exports = {
   plugins: [
     new HTMLWebpackPlugin({
       template: path.resolve("src/index.html"),
+    }),
+    new webpack.DefinePlugin({
+      API_KEY: JSON.stringify(process.env.API_KEY),
     }),
   ],
 
