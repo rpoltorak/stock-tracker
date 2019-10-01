@@ -68,8 +68,8 @@ describe("CompanySearch", () => {
     fireEvent.change(input, { target: { value: "GOOG" } });
 
     await wait(() => {
-      expect(container.querySelector("a")).toBeTruthy();
-      expect(container.querySelectorAll("a").length).toEqual(2);
+      expect(container.querySelector(".list-group-item")).toBeTruthy();
+      expect(container.querySelectorAll(".list-group-item").length).toEqual(2);
     });
   });
 

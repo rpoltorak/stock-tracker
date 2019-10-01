@@ -4,14 +4,13 @@ import camelCase from "lodash.camelcase";
 import { get } from "./request";
 
 const quoteUrl = "https://www.alphavantage.co/query";
-const key = "4I99RWN85Z9G0022";
 const detailsUrl = "https://autocomplete.clearbit.com/v1/companies/suggest";
 
 export function search(query) {
   return get(quoteUrl, {
     keywords: query,
     function: "SYMBOL_SEARCH",
-    apikey: key,
+    apikey: API_KEY,
   });
 }
 
@@ -19,7 +18,7 @@ export function getQuote(symbol) {
   return get(quoteUrl, {
     symbol,
     function: "GLOBAL_QUOTE",
-    apikey: key,
+    apikey: API_KEY,
   });
 }
 

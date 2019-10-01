@@ -6,36 +6,6 @@ import { CompanyList } from "./CompanyList";
 
 jest.mock("axios");
 
-axios.mockImplementation(({ url }) => {
-  switch (url) {
-    case "https://www.alphavantage.co/query?symbol=GOOG&function=GLOBAL_QUOTE&apikey=4I99RWN85Z9G0022":
-      return Promise.resolve({
-        "Global quote": {
-          "01. symbol": "AAPL",
-          "02. open": "225.0000",
-          "03. high": "228.2000",
-          "04. low": "224.4200",
-          "05. price": "224.9200",
-          "06. volume": "13727323",
-          "07. latest trading day": "2019-10-01",
-          "08. previous close": "223.9700",
-          "09. change": "0.9500",
-          "10. change percent": "0.4242%",
-        },
-      });
-    case "https://autocomplete.clearbit.com/v1/companies/suggest?query=Alphabet":
-      return Promise.resolve([
-        {
-          domain: "apple.com",
-          logo: "https://logo.clearbit.com/apple.com",
-          name: "Apple",
-        },
-      ]);
-    default:
-      return null;
-  }
-});
-
 const setupWithState = () => {
   const state = {
     companies: {
@@ -90,16 +60,6 @@ describe("CompanySearch", () => {
     setupWithState();
 
     await wait(() => {
-      expect(axios).toHaveBeenCalledWith({
-        method: "GET",
-        url:
-          "https://www.alphavantage.co/query?symbol=GOOG&function=GLOBAL_QUOTE&apikey=4I99RWN85Z9G0022",
-      });
-      expect(axios).toHaveBeenCalledWith({
-        method: "GET",
-        url:
-          "https://autocomplete.clearbit.com/v1/companies/suggest?query=Alphabet",
-      });
       expect(axios).toHaveBeenCalledTimes(2);
     });
   });

@@ -27,7 +27,7 @@ export function CompanyItem({ symbol }) {
 
   if (!quote || !details) {
     return (
-      <div className="mb-4">
+      <div className="mt-4">
         <Spinner animation="border" />
       </div>
     );
@@ -35,7 +35,7 @@ export function CompanyItem({ symbol }) {
 
   return (
     <Media
-      className="mb-2 position-relative"
+      className="mt-4 position-relative"
       onMouseEnter={() => setShowRemoval(true)}
       onMouseLeave={() => setShowRemoval(false)}
     >
