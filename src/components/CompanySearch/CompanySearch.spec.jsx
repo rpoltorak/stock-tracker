@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import axios from "axios";
 import { render, fireEvent, wait, cleanup } from "@testing-library/react";
 import { Store } from "../../store";
@@ -38,16 +38,6 @@ const exampleData = [
   },
 ];
 
-const renderWithStore = () => {
-  const { state, dispatch } = useContext(Store);
-
-  return render(
-    <Store.Provider value={{ state, dispatch }}>
-      <CompanySearch />
-    </Store.Provider>,
-  );
-};
-
 jest.mock("axios");
 
 afterEach(cleanup);
@@ -83,7 +73,7 @@ describe("CompanySearch", () => {
     });
   });
 
-  test("saves tracked symbol to store", async () => {
+  test("dispatches an action after clicking track button", async () => {
     const state = {
       companies: {
         byId: {},
