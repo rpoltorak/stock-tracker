@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import axios from "axios";
-import { render, fireEvent, wait } from "@testing-library/react";
-// import { Store } from "../../store";
+import { render, fireEvent, wait, cleanup } from "@testing-library/react";
+import { Store } from "../../store";
 import { CompanySearch } from "./CompanySearch";
 
 const setup = () => {
@@ -38,14 +38,19 @@ const exampleData = [
   },
 ];
 
-// const renderWithStore = (state, dispatch) =>
-//   render(
-//     <Store.Provider value={{ state, dispatch }}>
-//       <CompanySearch />
-//     </Store.Provider>,
-//   );
+const renderWithStore = () => {
+  const { state, dispatch } = useContext(Store);
+
+  return render(
+    <Store.Provider value={{ state, dispatch }}>
+      <CompanySearch />
+    </Store.Provider>,
+  );
+};
 
 jest.mock("axios");
+
+afterEach(cleanup);
 
 describe("CompanySearch", () => {
   test("renders properly on idle state", () => {
@@ -78,15 +83,25 @@ describe("CompanySearch", () => {
     });
   });
 
-  // test("saves tracked symbol to context", async () => {
-  //   const dispatch = jest.fn();
+  test("saves tracked symbol to store", async () => {
+    const state = {
+      companies: {
+        byId: {},
+        ids: [],
+      },
+    };
+    const dispatch = jest.fn();
 
-  //   const { input, getByText } = renderWithStore(undefined, dispatch);
+    const { getByTestId, getByText } = render(
+      <Store.Provider value={{ state, dispatch }}>
+        <CompanySearch />
+      </Store.Provider>,
+    );
 
-  //   fireEvent.change(input, { target: { value: "GOOG" } });
+    fireEvent.change(getByTestId("search"), { target: { value: "GOOG" } });
 
-  //   fireEvent.click(getByText("Track"));
+    fireEvent.click(getByText("Track"));
 
-  //   expect(dispatch).toHaveBeenCalled();
-  // });
+    expect(dispatch).toHaveBeenCalled();
+  });
 });
