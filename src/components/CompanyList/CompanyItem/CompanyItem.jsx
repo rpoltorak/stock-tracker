@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
+import { Spinner, Media } from "react-bootstrap";
 import { ActionTypes, Store } from "../../../store";
 import { useRequest } from "../../../hooks";
 import { getQuote, getDetails, removeSuffix } from "../../../services";
@@ -21,26 +22,43 @@ export function CompanyItem({ symbol }) {
   const [{ data: detailsList }] = useRequest(
     getDetails(removeSuffix(company.name)),
   );
+  const [showRemoval, setShowRemoval] = useState(false);
   const details = detailsList ? detailsList[0] : null;
 
-  return quote && details ? (
-    <div>
-      <CompanyLogo url={details.logo} />
-      <CompanyInfo company={company} domain={details.domain} />
-      <CompanyQuote
-        currency={company.currency}
-        quote={quote.globalQuote}
-      ></CompanyQuote>
-      <a
-        href="#"
-        onClick={() =>
-          dispatch({ type: ActionTypes.REMOVE_COMPANY, payload: symbol })
-        }
-      >
-        remove
-      </a>
-    </div>
-  ) : (
-    <div>loading...</div>
+  if (!quote || !details) {
+    return (
+      <div className="mb-4">
+        <Spinner animation="border" />
+      </div>
+    );
+  }
+
+  return (
+    <Media
+      className="mb-2 position-relative"
+      onMouseEnter={() => setShowRemoval(true)}
+      onMouseLeave={() => setShowRemoval(false)}
+    >
+      <CompanyLogo url={details.logo} name={company.name} />
+      <Media.Body>
+        <CompanyInfo company={company} domain={details.domain} />
+        <CompanyQuote
+          currency={company.currency}
+          quote={quote.globalQuote}
+        ></CompanyQuote>
+        {showRemoval && (
+          <a
+            href="#"
+            className="position-absolute"
+            style={{ top: 0, right: 0 }}
+            onClick={() =>
+              dispatch({ type: ActionTypes.REMOVE_COMPANY, payload: symbol })
+            }
+          >
+            x
+          </a>
+        )}
+      </Media.Body>
+    </Media>
   );
 }

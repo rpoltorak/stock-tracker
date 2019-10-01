@@ -1,8 +1,18 @@
-import React, { Fragment, useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ActionTypes, Store } from "../../store";
 import { useRequest } from "../../hooks";
 import { search as searchCompany } from "../../services";
 import { useDebounce } from "../../hooks";
+import {
+  FormGroup,
+  Form,
+  Row,
+  Col,
+  Button,
+  Spinner,
+  Alert,
+} from "react-bootstrap";
+import { CompanyResults } from "./CompanyResults";
 
 export function CompanySearch() {
   const { dispatch } = useContext(Store);
@@ -16,16 +26,23 @@ export function CompanySearch() {
   );
   const debouncedQuery = useDebounce(query, 500);
 
+  const preventQuery =
+    !debouncedQuery || (selectedItem && selectedItem.symbol === debouncedQuery);
+
+  const actionCallback = item => {
+    setQuery(item.symbol);
+    setSelectedItem(item);
+  };
+
   useEffect(() => {
-    if (debouncedQuery) {
+    if (!preventQuery) {
       setRequestParams(searchCompany(debouncedQuery));
     }
   }, [debouncedQuery]);
 
   return (
-    <Fragment>
-      <div>Company symbol</div>
-      <form
+    <div className="mt-4">
+      <Form
         onSubmit={event => {
           dispatch({ type: ActionTypes.ADD_COMPANY, payload: selectedItem });
           setQuery("");
@@ -35,38 +52,37 @@ export function CompanySearch() {
           event.preventDefault();
         }}
       >
-        <input
-          type="text"
-          value={query}
-          onChange={event => setQuery(event.target.value)}
-          data-testid="search"
-        />
-        <button type="submit">Track</button>
-      </form>
-      {isError && <div>Error occured</div>}
-      {isLoading ? (
-        <div>Loading ...</div>
-      ) : (
-        <ul>
-          {data.bestMatches &&
-            data.bestMatches.map(company => (
-              <li key={company.symbol}>
-                <a
-                  href="#"
-                  onClick={() => {
-                    setQuery(company.symbol);
-                    setSelectedItem(company);
-                  }}
-                >
-                  {company.symbol}: {company.name}
-                </a>
-              </li>
-            ))}
-        </ul>
+        <FormGroup>
+          <Row>
+            <Col sm={5}>
+              <Form.Label>Company symbol</Form.Label>
+              <Form.Control
+                type="text"
+                value={query}
+                onChange={event => setQuery(event.target.value)}
+                data-testid="search"
+                placeholder="Company symbol"
+              />
+              <Form.Text className="text-muted">
+                Provide the stock exchange symbol of a company you want to track
+              </Form.Text>
+            </Col>
+          </Row>
+        </FormGroup>
+        <Button type="submit">Track</Button>
+      </Form>
+      {isError && (
+        <Alert variant="danger" className="mt-4">
+          Error occured :(
+        </Alert>
       )}
-      <div>
-        Provide the stock exchange symbol of a company you want to track
-      </div>
-    </Fragment>
+      {isLoading ? (
+        <div className="mt-4">
+          <Spinner animation="border" />
+        </div>
+      ) : (
+        <CompanyResults results={data.bestMatches} action={actionCallback} />
+      )}
+    </div>
   );
 }

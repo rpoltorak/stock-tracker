@@ -14,8 +14,9 @@ CompanyQuote.propTypes = {
 
 export function CompanyQuote({ quote, currency }) {
   return (
-    <div>
-      <strong>{quote.price}</strong> {currency}
+    <div className="small">
+      <span className="font-weight-bold">{quote.price} </span>
+      {currency}
       <ChangeIndicator
         change={quote.change}
         changePercent={quote.changePercent}

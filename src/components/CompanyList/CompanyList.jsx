@@ -9,11 +9,9 @@ export function CompanyList() {
   } = useContext(Store);
 
   return companies.ids.length ? (
-    <ul>
-      {companies.ids.map(symbol => (
-        <CompanyItem key={symbol} symbol={symbol}></CompanyItem>
-      ))}
-    </ul>
+    companies.ids.map(symbol => (
+      <CompanyItem key={symbol} symbol={symbol}></CompanyItem>
+    ))
   ) : (
     <div>
       There are no companies yet.{" "}

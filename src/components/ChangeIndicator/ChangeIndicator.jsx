@@ -10,10 +10,8 @@ export function ChangeIndicator({ change, changePercent }) {
   const isIncrease = Number(change) > 0;
 
   return (
-    <div>
-      <span style={{ color: isIncrease ? "green" : "red" }}>
-        {change}({changePercent})
-      </span>
-    </div>
+    <span className="mx-2" style={{ color: isIncrease ? "green" : "red" }}>
+      {change}({changePercent})
+    </span>
   );
 }

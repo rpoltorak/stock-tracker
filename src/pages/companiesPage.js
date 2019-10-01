@@ -2,8 +2,8 @@ import React from "react";
 import { CompanyList } from "../components";
 
 export const CompaniesPage = () => (
-  <div>
-    <h1>Companies</h1>
+  <div className="mt-4">
+    <h2 className="h4">Companies</h2>
     <CompanyList />
   </div>
 );

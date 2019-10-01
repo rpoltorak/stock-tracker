@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 
 CompanyInfo.propTypes = {
@@ -15,14 +15,16 @@ CompanyInfo.propTypes = {
 
 export function CompanyInfo({ company, domain }) {
   return (
-    <div>
+    <Fragment>
       <div>
-        <strong>{name}</strong> {company.symbol} {domain}
+        <span className="font-weight-bold mr-2">{company.name}</span>{" "}
+        <span className="small mr-2">{company.symbol}</span>
+        <span className="small">{domain}</span>
       </div>
       <div>
         {company.region} {company.marketOpen}-{company.marketClose}{" "}
         {company.timezone}
       </div>
-    </div>
+    </Fragment>
   );
 }
