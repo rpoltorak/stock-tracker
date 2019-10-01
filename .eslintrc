@@ -27,5 +27,8 @@
   },
   "rules": {
     "no-console": "warn"
+  },
+  "globals": {
+    "API_KEY": true
   }
 }
