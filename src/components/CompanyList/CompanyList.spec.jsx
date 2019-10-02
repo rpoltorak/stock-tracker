@@ -6,23 +6,37 @@ import { CompanyList } from "./CompanyList";
 
 jest.mock("axios");
 
+const exampleData = [
+  {
+    "1. symbol": "GOOGL",
+    "2. name": "Alphabet Inc.",
+    "3. type": "Equity",
+    "4. region": "United States",
+    "5. marketOpen": "09:30",
+    "6. marketClose": "16:00",
+    "7. timezone": "UTC-04",
+    "8. currency": "USD",
+    "9. matchScore": "0.8889",
+  },
+];
+
 const setupWithState = () => {
   const state = {
     companies: {
       byId: {
-        GOOG: {
-          symbol: "GOOG",
+        GOOGL: {
+          symbol: "GOOGL.ARG",
           name: "Alphabet Inc.",
           type: "Equity",
-          region: "United States",
+          region: "Argentina",
           marketOpen: "09:30",
-          marketClose: "16:00",
+          marketClose: "6:00",
           timezone: "UTC-04",
           currency: "USD",
-          matchScore: "1.0000",
+          matchScore: "0.8889",
         },
       },
-      ids: ["GOOG"],
+      ids: ["GOOGL"],
     },
   };
 
@@ -39,6 +53,16 @@ afterEach(() => {
 });
 
 describe("CompanySearch", () => {
+  test("matches the snapshot", async () => {
+    axios.mockResolvedValue({ data: { bestMatches: exampleData } });
+
+    const component = setupWithState();
+
+    await wait(() => {
+      expect(component).toMatchSnapshot();
+    });
+  });
+
   test("renders properly on empty state", () => {
     const state = {
       companies: {
