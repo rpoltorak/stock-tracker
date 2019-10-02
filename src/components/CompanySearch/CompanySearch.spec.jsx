@@ -74,6 +74,8 @@ describe("CompanySearch", () => {
   });
 
   test("dispatches an action after clicking track button", async () => {
+    axios.mockResolvedValue({ data: { bestMatches: exampleData } });
+
     const state = {
       companies: {
         byId: {},
@@ -82,7 +84,7 @@ describe("CompanySearch", () => {
     };
     const dispatch = jest.fn();
 
-    const { getByTestId, getByText } = render(
+    const { getByTestId, getByText, container } = render(
       <Store.Provider value={{ state, dispatch }}>
         <CompanySearch />
       </Store.Provider>,
@@ -90,7 +92,10 @@ describe("CompanySearch", () => {
 
     fireEvent.change(getByTestId("search"), { target: { value: "GOOG" } });
 
-    fireEvent.click(getByText("Track"));
+    await wait(() => {
+      fireEvent.click(container.querySelectorAll(".list-group-item")[0]);
+      fireEvent.click(getByText("Track"));
+    });
 
     expect(dispatch).toHaveBeenCalled();
   });

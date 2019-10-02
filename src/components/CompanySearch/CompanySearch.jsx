@@ -34,6 +34,14 @@ export function CompanySearch() {
     setSelectedItem(item);
   };
 
+  const reset = () => {
+    setQuery("");
+    setSelectedItem(null);
+    setData({
+      bestMatches: [],
+    });
+  };
+
   useEffect(() => {
     if (!preventQuery) {
       setRequestParams(searchCompany(debouncedQuery));
@@ -44,12 +52,9 @@ export function CompanySearch() {
     <div className="mt-4">
       <Form
         onSubmit={event => {
-          dispatch({ type: ActionTypes.ADD_COMPANY, payload: selectedItem });
-          setQuery("");
-          setData({
-            bestMatches: [],
-          });
           event.preventDefault();
+          dispatch({ type: ActionTypes.ADD_COMPANY, payload: selectedItem });
+          reset();
         }}
       >
         <FormGroup>
@@ -69,7 +74,9 @@ export function CompanySearch() {
             </Col>
           </Row>
         </FormGroup>
-        <Button type="submit">Track</Button>
+        <Button type="submit" disabled={!selectedItem}>
+          Track
+        </Button>
       </Form>
       {isError && (
         <Alert variant="danger" className="mt-4">
