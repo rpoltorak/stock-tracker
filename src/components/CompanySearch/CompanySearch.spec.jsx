@@ -43,6 +43,12 @@ jest.mock("axios");
 afterEach(cleanup);
 
 describe("CompanySearch", () => {
+  test("matches the snapshot", () => {
+    const component = setup();
+
+    expect(component).toMatchSnapshot();
+  });
+
   test("renders properly on idle state", () => {
     const { getByText, input } = setup();
 

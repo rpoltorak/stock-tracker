@@ -22,7 +22,6 @@ export function CompanyQuote({ quote, currency }) {
         changePercent={quote.changePercent}
       />
       Closed: {quote.latestTradingDay}
-      {closed}
     </div>
   );
 }
